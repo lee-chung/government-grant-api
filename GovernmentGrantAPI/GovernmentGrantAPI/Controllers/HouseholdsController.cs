@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GovernmentGrantAPI.Model;
 using System.Diagnostics;
+using GovernmentGrantAPI.Model.Extension;
 
 namespace GovernmentGrantAPI.Controllers
 {
@@ -23,9 +24,43 @@ namespace GovernmentGrantAPI.Controllers
 
         // GET: api/Households
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Household>>> GetHouseholds()
+        public async Task<ActionResult<IEnumerable<Household>>> GetHouseholds(
+            int? hasMemberYoungerThan,
+            int? hasMemberOlderThan,
+            double? householdIncomeLessThan,
+            bool? hasHusbandAndWife)
         {
-            return await _context.Households.Include(h => h.FamilyMembers).ToListAsync();
+            var households =  await _context.Households.Include(h => h.FamilyMembers).ToListAsync();
+
+            if (hasMemberYoungerThan.HasValue)
+            {
+                households = households.
+                                Where(h => h.FamilyMembers.Any(f => f.GetAge() < hasMemberYoungerThan.Value)).
+                                ToList();
+            }
+
+            if (hasMemberOlderThan.HasValue)
+            {
+                households = households.
+                                Where(h => h.FamilyMembers.Any(f => f.GetAge() > hasMemberOlderThan.Value)).
+                                ToList();
+            }
+
+            if (householdIncomeLessThan.HasValue)
+            {
+                households = households.
+                                Where(h=> h.GetAnnualIncome() < householdIncomeLessThan.Value).
+                                ToList();
+            }
+
+            if (hasHusbandAndWife.HasValue && hasHusbandAndWife.Value)
+            {
+                households = households.
+                                Where(h => h.HasHusbandAndWife()).
+                                ToList();
+            }
+
+            return households;
         }
 
         // GET: api/Households/5
