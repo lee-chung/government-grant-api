@@ -28,8 +28,11 @@ namespace GovernmentGrantAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<HouseholdContext>(opt =>
-                opt.UseInMemoryDatabase("HouseholdDB"));
+            services.AddDbContextPool<HouseholdContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("HouseholdDBConnection")));
+
+            //services.AddDbContext<HouseholdContext>(opt =>
+            //    opt.UseInMemoryDatabase("HouseholdDB"));
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
