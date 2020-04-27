@@ -27,7 +27,8 @@ namespace GovernmentGrantAPI.Controllers
             int? hasMemberYoungerThan,
             int? hasMemberOlderThan,
             double? householdIncomeLessThan,
-            bool? hasHusbandAndWife)
+            bool? hasHusbandAndWife,
+            HousingType? housingType)
         {
             var households =  await _context.Households.Include(h => h.FamilyMembers).ToListAsync();
 
@@ -57,6 +58,12 @@ namespace GovernmentGrantAPI.Controllers
                 households = households.
                                 Where(h => h.HasHusbandAndWife()).
                                 ToList();
+            }
+
+            if (housingType.HasValue)
+            {
+                households = households.Where(h => h.HousingType == housingType.Value)
+                             .ToList();
             }
 
             return households;
