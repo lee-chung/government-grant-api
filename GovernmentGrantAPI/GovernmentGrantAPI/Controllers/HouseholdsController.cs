@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GovernmentGrantAPI.Model;
 using System.Diagnostics;
 using GovernmentGrantAPI.Model.Extension;
+using GovernmentGrantAPI.Model.Dto;
 
 namespace GovernmentGrantAPI.Controllers
 {
@@ -115,8 +116,14 @@ namespace GovernmentGrantAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Household>> PostHousehold(Household household)
+        public async Task<ActionResult<Household>> PostHousehold(AddHouseholdDto addHouseholdDto)
         {
+            var household = new Household
+            {
+                FamilyMembers = new List<FamilyMember>(),
+                HousingType = addHouseholdDto.HousingType
+            };
+
             _context.Households.Add(household);
             await _context.SaveChangesAsync();
 
@@ -124,17 +131,29 @@ namespace GovernmentGrantAPI.Controllers
         }
 
         [HttpPost("addfamilymember")]
-        public async Task<ActionResult<Household>> AddFamilyMember(int housdholdId, FamilyMember familyMember)
+        public async Task<ActionResult<Household>> AddFamilyMember(AddFamilyMemberDto addFamilyMemberDto)
         {
-            if (!HouseholdExists(housdholdId))
+            if (!HouseholdExists(addFamilyMemberDto.HouseholdId))
             {
                 return NotFound();
             }
-            var household = await _context.Households.FindAsync(housdholdId);
-            if (household.FamilyMembers == null)
+            var households = await _context.Households.Include(h => h.FamilyMembers).ToListAsync();
+
+            var household = households.First(h => h.Id == addFamilyMemberDto.HouseholdId);
+
+            var nextFamilyMemberId = households.SelectMany(h => h.FamilyMembers).Select(f => f.Id).Max() + 1;
+
+            var familyMember = new FamilyMember()
             {
-                household.FamilyMembers = new List<FamilyMember>();
-            }
+                Id = nextFamilyMemberId,
+                Name = addFamilyMemberDto.Name,
+                Gender = addFamilyMemberDto.Gender,
+                MaritalStatus = addFamilyMemberDto.MaritalStatus,
+                Spouse = addFamilyMemberDto.Spouse,
+                OccupationType = addFamilyMemberDto.OccupationType,
+                AnnualIncome = addFamilyMemberDto.AnnualIncome,
+                DOB = DateTime.Parse(addFamilyMemberDto.DOB)
+            };
 
             household.FamilyMembers.Add(familyMember);
 

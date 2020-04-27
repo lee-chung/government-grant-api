@@ -36,6 +36,7 @@ namespace GovernmentGrantAPI
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
             services.AddSwaggerGen(c =>
