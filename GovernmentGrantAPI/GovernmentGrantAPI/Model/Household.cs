@@ -7,8 +7,10 @@ namespace GovernmentGrantAPI.Model
 {
     public class Household
     {
+        public int Id { get; set; }
+
         public HousingType HousingType { get; set; }
 
-        public IEnumerable<FamilyMember> FamilyMembers { get; set; }
+        public ICollection<FamilyMember> FamilyMembers { get; set; }
     }
 }

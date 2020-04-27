@@ -7,7 +7,7 @@ namespace GovernmentGrantAPI.Model
 {
     public enum Gender
     {
-        M,
-        F
+        Male,
+        Female
     }
 }
