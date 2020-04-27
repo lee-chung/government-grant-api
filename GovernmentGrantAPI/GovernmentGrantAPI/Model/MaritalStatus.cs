@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GovernmentGrantAPI.Model
+﻿namespace GovernmentGrantAPI.Model
 {
-    // https://www.singstat.gov.sg/-/media/files/standards_and_classifications/scms.pdf
+    // Reference: https://www.singstat.gov.sg/-/media/files/standards_and_classifications/scms.pdf
     public enum MaritalStatus
     {
         Single,

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GovernmentGrantAPI.Model.Extension
 {
@@ -29,27 +27,6 @@ namespace GovernmentGrantAPI.Model.Extension
             }
 
             return false;
-        }
-
-        public static int FindNextFamilyMemberId(this IList<Household> households)
-        {
-            var maxFamilyMemberId = 0;
-            foreach (var household in households)
-            {
-                if (household.FamilyMembers == null)
-                {
-                    continue;
-                }
-
-                foreach (var familyMember in household.FamilyMembers)
-                {
-                    if (familyMember.Id > maxFamilyMemberId)
-                    {
-                        maxFamilyMemberId = familyMember.Id;
-                    }
-                }
-            }
-            return maxFamilyMemberId + 1;
         }
 
     }
