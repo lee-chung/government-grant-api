@@ -111,7 +111,7 @@ namespace GovernmentGrantAPI.Controllers
 
             var household = households.First(h => h.Id == addFamilyMemberDto.HouseholdId);
 
-            var nextFamilyMemberId = households.SelectMany(h => h.FamilyMembers).Select(f => f.Id).Max() + 1;
+            var nextFamilyMemberId = households.SelectMany(h => h.FamilyMembers).Select(f => f.Id).DefaultIfEmpty(0).Max() + 1;
 
             var familyMember = new FamilyMember()
             {
