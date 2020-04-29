@@ -80,7 +80,7 @@ After building and runnning the solution, a [Swagger](https://swagger.io/) web i
   - ```maritalStatus```: "Single", "Married", "Widowed", "Separated", or "Divorced". Reference: <https://www.singstat.gov.sg/-/media/files/standards_and_classifications/scms.pdf>
   - ```spouse```: Name of the spouse (if any)
   - ```occupationType```: Unemployed, Student, Employed
-  - ```annualIncome```: Annual incom
+  - ```annualIncome```: Annual income
   - ```dob```: Date of birth in format of ```yyyy-mm-dd```
 
 ``` JSON
@@ -223,7 +223,7 @@ After building and runnning the solution, a [Swagger](https://swagger.io/) web i
 - Student Encouragement Bonus
   - Households with children of less than 16 years old.
   - Household income of less than $150,000.
-  - Web API: <http://localhost:5000/api/Households?hasMemberYoungerThan=16&householdIncomeLessThan=15000>
+  - Web API: <http://localhost:5000/api/Households?hasMemberYoungerThan=16&householdIncomeLessThan=150000>
 - Family Togetherness Scheme
   - Households with husband & wife.
   - Has child(ren) younger than 18 years old.
